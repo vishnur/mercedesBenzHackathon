@@ -1,0 +1,9 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:3000');
+  socket.emit("vehicle_data", {'seq' : 0})
+  socket.on('data', function (data) {
+    console.log(data);
+    socket.emit('vehicle_data', { 'seq': 6 });
+  });
+</script>

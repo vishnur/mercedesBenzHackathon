@@ -1,0 +1,16 @@
+{
+  "name": "AccidentBlackbox",
+  "version": "0.0.1",
+  "description": "Accident Blackbox captures information when ",
+  "main": "app.js",
+  "author": {
+    "name": "Accident Blackbox team",
+    "email": ""
+  },
+  "dependencies": {
+    "express": "*",
+    "json": "*",
+    "socket.io": "*",
+    "mongodb": "*"
+  }
+}

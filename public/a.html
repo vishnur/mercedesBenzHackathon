@@ -1,0 +1,70 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script>
+(function poll() {
+    $.ajax({
+        url: "http://172.31.99.2/vehicle",
+        type: "GET",
+        success: function(data) {
+            // do something here
+            var jsonString = JSON.stringify(data, undefined, 4);
+        },
+        dataType: "json",
+        crossDomain: true,
+        complete: setTimeout(function() {poll()}, 1000),
+        timeout: 1000
+    })
+})();
+</script>
+
+<script type="text/javascript">
+    var simulatorIndex = 0;
+    var simulators = [
+        '172.31.99.2',
+        '172.31.99.3',
+        '172.31.99.4',
+        '172.31.99.5'
+    ];
+    
+    (function poll() {
+        $.ajax({
+            url: "http://" + simulators[simulatorIndex] + "/vehicle",
+            type: "GET",
+            success: function(data) {
+                $("#json").html(JSON.stringify(data, undefined, 4));
+
+                var speed_kph = data.Vehicle_Speed;
+                var speed_mph = data.Vehicle_Speed * 0.621371;
+
+                $("#speed").html("Speed = " + speed_kph.toFixed(1) + " km/h = " + speed_mph.toFixed(1) + " mph");
+
+                var lat = data.GPS_Latitude;
+                var lng = data.GPS_Longitude;
+
+                if (typeof marker !== 'undefined') {
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        $("#location").html("GPS Location = " + lat.toFixed(7) + ", " + lng.toFixed(7));
+                        marker.setVisible(true);
+                        marker.setPosition({lat:lat, lng:lng});
+                        map.panTo({lat:lat, lng:lng});
+                    } else {
+                        $("#location").html("Location = Unknown");
+                        marker.setVisible(false);
+                    }
+                }
+            },
+            dataType: "json",
+            crossDomain: true,
+            complete: setTimeout(function() {poll()}, 1000),
+            timeout: 1000
+        })
+    })();
+</script>
+
+
+<h3>Live JSON Response</h3>
+    <pre><div id="json">{}</div></pre>
+
+    <br /><br />
+    
+    <br /><br /><br />
+
